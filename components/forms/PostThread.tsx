@@ -23,7 +23,7 @@ const PostThread = ({ userId }: { userId: string }) => {
   const pathname = usePathname();
 
   const { organization } = useOrganization();
-  console.log(organization, "org");
+  // console.log(organization, "org");
 
   const form = useForm({
     resolver: zodResolver(ThreadValidation),

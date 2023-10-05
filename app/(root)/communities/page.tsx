@@ -18,7 +18,7 @@ const Page = async () => {
   });
   return (
     <section className="head-text mb-10">
-      <h2>Search</h2>
+      <h2>Communities</h2>
       <div className="mt-14 flex flex-col gap-9">
         {result.communities.length === 0 ? (
           <p className="no-result">No communities</p>
