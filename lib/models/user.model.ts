@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   onboarded: { type: Boolean, default: false },
-  commnunties: [
+  communities: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Community",

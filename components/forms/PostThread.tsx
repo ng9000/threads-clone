@@ -37,7 +37,7 @@ const PostThread = ({ userId }: { userId: string }) => {
     await createThread({
       text: values.thread,
       author: userId,
-      communityId: "org_2WINAyWI6CogPUBg7i4feCzj4IC",
+      communityId: organization ? organization?.id : null,
       path: pathname,
     });
     router.push("/");
