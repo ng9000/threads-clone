@@ -27,6 +27,7 @@ const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
           currentUserId={currentUserId}
           parentId={thread.parentId}
           content={thread.text}
+          likes={thread.likes}
           author={
             accountType === "User"
               ? { name: response.name, image: response.image, id: response.id }

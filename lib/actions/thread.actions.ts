@@ -7,6 +7,12 @@ import { connectToDB } from "../mongoose";
 import User from "../models/user.model";
 import Thread from "../models/thread.model";
 import Community from "../models/community.model";
+interface Params {
+  text: string;
+  author: string;
+  communityId: string | null;
+  path: string;
+}
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   connectToDB();
@@ -48,13 +54,6 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   return { posts, isNext };
 }
 
-interface Params {
-  text: string;
-  author: string;
-  communityId: string | null;
-  path: string;
-}
-
 export async function createThread({
   text,
   author,
@@ -72,6 +71,7 @@ export async function createThread({
     const createdThread = await Thread.create({
       text,
       author,
+      likes: [],
       community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
     });
 
@@ -240,5 +240,32 @@ export async function addCommentToThread(
   } catch (err) {
     console.error("Error while adding comment:", err);
     throw new Error("Unable to add comment");
+  }
+}
+interface PropsLikes {
+  userId: any;
+  threadId: any;
+}
+export async function likePost({ userId, threadId }: PropsLikes) {
+  connectToDB();
+  try {
+    await Thread.findOneAndUpdate(
+      { _id: threadId },
+      { $push: { likes: userId } }
+    );
+  } catch (error) {
+    console.error("Error while adding like:", error);
+  }
+}
+
+export async function dislikePost({ userId, threadId }: PropsLikes) {
+  connectToDB();
+  try {
+    await Thread.findOneAndUpdate(
+      { _id: threadId },
+      { $pull: { likes: userId } }
+    );
+  } catch (error) {
+    console.error("Error while adding like:", error);
   }
 }

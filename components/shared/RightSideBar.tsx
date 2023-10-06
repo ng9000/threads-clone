@@ -9,13 +9,13 @@ const RightSideBar = async () => {
   if (!user) return null;
 
   const communities = await fetchCommunities({
-    pageSize: 25,
+    pageSize: 5,
   });
   const users = await fetchUsers({
     userId: user.id,
     searchString: "",
     pageNumber: 1,
-    pageSize: 25,
+    pageSize: 5,
   });
   return (
     <section className="custom-scrolbar rightsidebar">

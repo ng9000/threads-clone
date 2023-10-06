@@ -1,8 +1,7 @@
-"use client";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -12,7 +11,6 @@ interface Props {
   personType: string;
 }
 const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
-  const router = useRouter();
   return (
     <article className="user-card">
       <div className="user-card_avatar">
@@ -28,16 +26,13 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
           <p className="text-small-medium text-gray-1">{username}</p>
         </div>
       </div>
-      <Button
-        className="user-card_btn"
-        onClick={() =>
-          router.push(
-            `/${personType === "community" ? "communities" : "profile"}/${id}`
-          )
-        }
+      <Link
+        href={`/${
+          personType === "community" ? "communities" : "profile"
+        }/${id}`}
       >
-        View
-      </Button>
+        <Button className="btn user-card_btn">View</Button>
+      </Link>
     </article>
   );
 };

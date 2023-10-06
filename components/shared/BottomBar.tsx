@@ -2,11 +2,11 @@
 import { sidebarLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const BottomBar = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
   return (
     <section className="bottombar">

@@ -1,7 +1,9 @@
+// "use client";
 import Image from "next/image";
 import Link from "next/link";
 
 import { formatDateString } from "@/lib/utils";
+import LikeButton from "../client/LikeButton";
 //import DeleteThread from "../forms/DeleteThread";
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
   currentUserId: string;
   parentId: string | null;
   content: string;
+  likes: any[];
   author: {
     name: string;
     image: string;
@@ -38,6 +41,7 @@ function ThreadCard({
   createdAt,
   comments,
   isComment,
+  likes,
 }: Props) {
   return (
     <article
@@ -71,12 +75,19 @@ function ThreadCard({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-                <Image
+                {/* <Image
                   src="/assets/heart-gray.svg"
                   alt="heart"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
+                  //  onClick={() => likePost(id, currentUserId)}
+                /> */}
+                <LikeButton
+                  like={likes.includes(currentUserId)}
+                  likesLength={likes.length}
+                  currentUserId={currentUserId}
+                  id={id}
                 />
                 <Link href={`/thread/${id}`}>
                   <Image
