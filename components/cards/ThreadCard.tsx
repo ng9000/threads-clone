@@ -49,7 +49,7 @@ function ThreadCard({
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
-        isComment ? "px-0 xs:px-5" : "bg-dark-2 p-5"
+        isComment ? "px-0 xs:px-5" : "bg-dark-2 md:p-7 p-3"
       }`}
     >
       <div className="flex items-start justify-between">

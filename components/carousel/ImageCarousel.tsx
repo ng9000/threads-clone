@@ -27,7 +27,7 @@ const ImageCarousel = (postImages: any) => {
         style={{
           backgroundImage: `url(${postImages.postImages[currentIndex].dataURL})`,
         }}
-        className="h-[300px] sm:h-[300px] lg:h-[580px] rounded-2xl bg-center bg-cover duration-500"
+        className="h-[175px] sm:h-[175px] lg:h-[580px] rounded-2xl bg-center bg-cover duration-500"
       ></div>
 
       {/* Left Arrow */}
@@ -46,9 +46,9 @@ const ImageCarousel = (postImages: any) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M5 1 1 5l4 4"
               />
             </svg>
@@ -73,9 +73,9 @@ const ImageCarousel = (postImages: any) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 9 4-4-4-4"
               />
             </svg>
