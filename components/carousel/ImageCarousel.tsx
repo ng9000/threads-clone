@@ -1,8 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import TailWindModal from "../modal/TailWindModal";
+import Image from "next/image";
 
 const ImageCarousel = (postImages: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [viewImage, setViewImage] = useState("");
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -21,18 +25,26 @@ const ImageCarousel = (postImages: any) => {
   const goToSlide = (slideIndex: number) => {
     setCurrentIndex(slideIndex);
   };
+
+  const handleModalView = (image: string) => {
+    setViewImage(image);
+    setShowModal(true);
+  };
   return (
-    <div className="max-w-[1400px] sm:max-w-[768px] lg:max-w-[1400px] w-full m-auto py-3 relative group">
+    <div className="max-w-[1400px] sm:max-w-[768px] lg:max-w-[1400px] w-full h-full m-auto pt-3 relative group">
       <div
         style={{
           backgroundImage: `url(${postImages.postImages[currentIndex].dataURL})`,
         }}
         className="h-[175px] sm:h-[175px] lg:h-[580px] rounded-2xl bg-center bg-cover duration-500"
+        onClick={() =>
+          handleModalView(postImages.postImages[currentIndex].dataURL)
+        }
       ></div>
 
       {/* Left Arrow */}
       {postImages.postImages.length > 1 ? (
-        <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 text-white cursor-pointer">
+        <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] left-2 text-2xl rounded-full p-2 text-white cursor-pointer">
           <span
             onClick={prevSlide}
             className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
@@ -59,7 +71,7 @@ const ImageCarousel = (postImages: any) => {
 
       {/* Right Arrow */}
       {postImages.postImages.length > 1 ? (
-        <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 text-white cursor-pointer">
+        <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] right-2 text-2xl rounded-full p-2 text-white cursor-pointer">
           <span
             onClick={nextSlide}
             className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
@@ -84,6 +96,7 @@ const ImageCarousel = (postImages: any) => {
         </div>
       ) : null}
 
+      {/* Bottom carousel image navigation */}
       {postImages.postImages.length > 1 ? (
         <div className="flex top-4 justify-center">
           {postImages.postImages.map((slide: any, slideIndex: number) => (
@@ -111,6 +124,11 @@ const ImageCarousel = (postImages: any) => {
           ))}
         </div>
       ) : null}
+      <TailWindModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        image={viewImage}
+      />
     </div>
   );
 };

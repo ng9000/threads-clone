@@ -6,6 +6,7 @@ import { formatDateString } from "@/lib/utils";
 import LikeButton from "../client/LikeButton";
 //import DeleteThread from "../forms/DeleteThread";
 import ImageCarousel from "../carousel/ImageCarousel";
+import ImageSlider from "../carousel/ImageSlider";
 
 interface Props {
   id: string;
