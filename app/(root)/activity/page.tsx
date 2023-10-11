@@ -23,7 +23,7 @@ const Page = async () => {
                 <article className="activity-card">
                   <Image
                     src={activity.author.image}
-                    alt="profilr picture"
+                    alt="profile picture"
                     width={20}
                     height={20}
                     className="rounded-full object-cover"

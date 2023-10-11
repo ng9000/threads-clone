@@ -12,6 +12,49 @@ interface Params {
   author: string;
   communityId: string | null;
   path: string;
+  image?: File[];
+}
+
+export async function createThread({
+  text,
+  author,
+  communityId,
+  path,
+  image,
+}: Params) {
+  try {
+    connectToDB();
+
+    const communityIdObject = await Community.findOne(
+      { id: communityId },
+      { _id: 1 }
+    );
+    console.log(image, "-------------------------------");
+
+    const createdThread = await Thread.create({
+      text,
+      author,
+      likes: [],
+      postImages: image || null,
+      community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
+    });
+
+    // Update User model
+    await User.findByIdAndUpdate(author, {
+      $push: { threads: createdThread._id },
+    });
+
+    if (communityIdObject) {
+      // Update Community model
+      await Community.findByIdAndUpdate(communityIdObject, {
+        $push: { threads: createdThread._id },
+      });
+    }
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to create thread: ${error.message}`);
+  }
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
@@ -52,45 +95,6 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   const isNext = totalPostsCount > skipAmount + posts.length;
 
   return { posts, isNext };
-}
-
-export async function createThread({
-  text,
-  author,
-  communityId,
-  path,
-}: Params) {
-  try {
-    connectToDB();
-
-    const communityIdObject = await Community.findOne(
-      { id: communityId },
-      { _id: 1 }
-    );
-
-    const createdThread = await Thread.create({
-      text,
-      author,
-      likes: [],
-      community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
-    });
-
-    // Update User model
-    await User.findByIdAndUpdate(author, {
-      $push: { threads: createdThread._id },
-    });
-
-    if (communityIdObject) {
-      // Update Community model
-      await Community.findByIdAndUpdate(communityIdObject, {
-        $push: { threads: createdThread._id },
-      });
-    }
-
-    revalidatePath(path);
-  } catch (error: any) {
-    throw new Error(`Failed to create thread: ${error.message}`);
-  }
 }
 
 async function fetchAllChildThreads(threadId: string): Promise<any[]> {

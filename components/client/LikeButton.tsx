@@ -28,7 +28,7 @@ const LikeButton = ({ id, currentUserId, like, likesLength }: Params) => {
   };
   return (
     <>
-      <Image
+      {/* <Image
         src={`/assets/heart-${isLiked ? "filled" : "gray"}.svg`}
         alt="heart"
         width={24}
@@ -40,7 +40,22 @@ const LikeButton = ({ id, currentUserId, like, likesLength }: Params) => {
         <span className="mt-1 text-subtle-medium text-gray-1">
           {likeCount} Like{likeCount > 1 ? "s" : ""}
         </span>
-      ) : null}
+      ) : null} */}
+      <div className="flex items-center">
+        <Image
+          src={`/assets/heart-${isLiked ? "filled" : "gray"}.svg`}
+          alt="heart"
+          width={24}
+          height={24}
+          className="cursor-pointer object-contain"
+          onClick={handleLikeOrDislike}
+        />
+        {likeCount > 0 && (
+          <span className="mt-1 text-subtle-medium text-gray-1">
+            {likeCount} Like{likeCount > 1 ? "s" : ""}
+          </span>
+        )}
+      </div>
     </>
   );
 };

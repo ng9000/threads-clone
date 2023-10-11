@@ -27,11 +27,12 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
         </div>
       </div>
       <Link
+        //className="user-card_btn"
         href={`/${
           personType === "community" ? "communities" : "profile"
         }/${id}`}
       >
-        <Button className="btn user-card_btn">View</Button>
+        <Button className="user-card_btn">View</Button>
       </Link>
     </article>
   );

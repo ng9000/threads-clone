@@ -11,8 +11,8 @@ export default async function Home() {
 
   return (
     <div>
-      <h1 className="head-text text-left">Home</h1>
-      <section className="mt-9 flex flex-col gap-10">
+      <h1 className="head-text text-left">Threads-Clone</h1>
+      <section className="mt-7 flex flex-col gap-10">
         {result.posts.length === 0 ? (
           <p>No Threads found</p>
         ) : (
@@ -30,6 +30,7 @@ export default async function Home() {
                 comments={post.children}
                 likes={post.likes}
                 isComment={false}
+                postImages={post?.postImages}
               />
             ))}
           </>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -17,11 +17,46 @@ import { usePathname, useRouter } from "next/navigation";
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
 import { useOrganization } from "@clerk/nextjs";
+import ImageUpload from "./ImageUpload";
 
 const PostThread = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [files, setFiles] = useState<any[]>([]);
+  const [message, setMessage] = useState("");
 
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage("");
+    const newFiles = e.target.files;
+    if (newFiles) {
+      for (let i = 0; i < newFiles.length; i++) {
+        const fileType = newFiles[i].type;
+        const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+        if (files.length >= 5) {
+          setMessage("You can upload a maximum of 5 images.");
+          return; // Stop processing further files if the limit is reached
+        }
+        if (validImageTypes.includes(fileType)) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            setFiles((prevFiles) => [
+              ...prevFiles,
+              { file: newFiles[i], dataURL: event.target?.result },
+            ]);
+          };
+          reader.readAsDataURL(newFiles[i]);
+        } else {
+          setMessage("Only images accepted");
+        }
+      }
+    }
+  };
+
+  const removeImage = (fileName: string) => {
+    setFiles((prevFiles) =>
+      prevFiles.filter((file) => file.file.name !== fileName)
+    );
+  };
   const { organization } = useOrganization();
   // console.log(organization, "org");
 
@@ -39,6 +74,7 @@ const PostThread = ({ userId }: { userId: string }) => {
       author: userId,
       communityId: organization ? organization?.id : null,
       path: pathname,
+      image: files,
     });
     router.push("/");
   };
@@ -46,7 +82,7 @@ const PostThread = ({ userId }: { userId: string }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-10 space-y-8 flex flex-col justify-start gap-10"
+        className="mt-10 space-y-8 flex flex-col justify-start"
       >
         <FormField
           control={form.control}
@@ -57,11 +93,17 @@ const PostThread = ({ userId }: { userId: string }) => {
                 Content
               </FormLabel>
               <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1">
-                <Textarea rows={15} {...field} />
+                <Textarea rows={7} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
+        />
+        <ImageUpload
+          handleFile={handleFile}
+          removeImage={removeImage}
+          files={files}
+          message={message}
         />
         <Button type="submit" className="bg-primary-500">
           Send

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatDateString } from "@/lib/utils";
 import LikeButton from "../client/LikeButton";
 //import DeleteThread from "../forms/DeleteThread";
+import ImageCarousel from "../carousel/ImageCarousel";
 
 interface Props {
   id: string;
@@ -29,6 +30,7 @@ interface Props {
     };
   }[];
   isComment?: boolean;
+  postImages?: any;
 }
 
 function ThreadCard({
@@ -42,11 +44,12 @@ function ThreadCard({
   comments,
   isComment,
   likes,
+  postImages,
 }: Props) {
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
-        isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
+        isComment ? "px-0 xs:px-5" : "bg-dark-2 p-5"
       }`}
     >
       <div className="flex items-start justify-between">
@@ -73,16 +76,12 @@ function ThreadCard({
 
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
-            <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
+            {/* // TODO add carousel for uploaded images */}
+            {postImages?.length > 0 && postImages ? (
+              <ImageCarousel postImages={postImages} />
+            ) : null}
+            <div className={`${isComment && "mb-10"} mt-3 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-                {/* <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                  //  onClick={() => likePost(id, currentUserId)}
-                /> */}
                 <LikeButton
                   like={likes.includes(currentUserId)}
                   likesLength={likes.length}
