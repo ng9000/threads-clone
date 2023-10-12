@@ -12,7 +12,7 @@ const ImageUpload = ({ handleFile, files, removeImage, message }: Props) => {
   return (
     <>
       <div className="flex">
-        <div className="rounded-lg shadow-xl border-dark-4 bg-dark-3 text-light-1  md:w-1/2 w-[360px]">
+        <div className="rounded-lg shadow-xl border-dark-4 bg-dark-3 text-light-1  md:w-1/2 w-[310px]">
           <div className="m-4">
             <span className="flex justify-center items-center text-[12px] mb-1 text-red-500">
               {message}
