@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import { formatDateString } from "@/lib/utils";
 import LikeButton from "../client/LikeButton";
-//import DeleteThread from "../forms/DeleteThread";
 import ImageCarousel from "../carousel/ImageCarousel";
-import ImageSlider from "../carousel/ImageSlider";
+import DeleteThread from "../forms/DeleteThread";
+import Share from "../shared/Share";
 
 interface Props {
   id: string;
@@ -77,7 +77,6 @@ function ThreadCard({
 
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
-            {/* // TODO add carousel for uploaded images */}
             {postImages?.length > 0 && postImages ? (
               <ImageCarousel postImages={postImages} />
             ) : null}
@@ -98,6 +97,7 @@ function ThreadCard({
                     className="cursor-pointer object-contain"
                   />
                 </Link>
+                {/* //TODO add quoted retweet */}
                 <Image
                   src="/assets/repost.svg"
                   alt="heart"
@@ -105,13 +105,7 @@ function ThreadCard({
                   height={24}
                   className="cursor-pointer object-contain"
                 />
-                <Image
-                  src="/assets/share.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
+                <Share url={id} />
               </div>
 
               {isComment && comments.length > 0 && (
@@ -125,13 +119,13 @@ function ThreadCard({
           </div>
         </div>
 
-        {/* <DeleteThread
+        <DeleteThread
           threadId={JSON.stringify(id)}
           currentUserId={currentUserId}
           authorId={author.id}
           parentId={parentId}
           isComment={isComment}
-        /> */}
+        />
       </div>
 
       {!isComment && comments.length > 0 && (

@@ -44,19 +44,49 @@ const Page = async ({ params }: { params: { id: string } }) => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="w-full text-light-1"
-            >
-              <ThreadsTab
-                currentUserId={user.id}
-                accountId={userInfo.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))}
+          {/* {profileTabs.map((tab) => ( */}
+          {/* ))} */}
+          <TabsContent
+            key={`content-Threads`}
+            value="threads"
+            className="w-full text-light-1"
+          >
+            <ThreadsTab
+              currentUserId={user.id}
+              accountId={userInfo.id}
+              searchId={userInfo._id}
+              accountType="User"
+              value="threads"
+            />
+          </TabsContent>
+
+          <TabsContent
+            key={`content-Replies`}
+            value="replies"
+            className="w-full text-light-1"
+          >
+            <ThreadsTab
+              currentUserId={user.id}
+              accountId={userInfo.id}
+              accountType="User"
+              searchId={userInfo._id}
+              value="replies"
+            />
+          </TabsContent>
+
+          {/* <TabsContent
+            key={`content-Tagged`}
+            value="tags"
+            className="w-full text-light-1"
+          >
+            <ThreadsTab
+              currentUserId={user.id}
+              searchId={userInfo._id}
+              accountId={userInfo.id}
+              accountType="User"
+              value="tags"
+            />
+          </TabsContent> */}
         </Tabs>
       </div>
     </section>

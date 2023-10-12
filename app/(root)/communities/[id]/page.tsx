@@ -48,6 +48,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <ThreadsTab
               currentUserId={user.id}
               accountId={communityDetails._id}
+              searchId=""
               accountType="Community"
             />
           </TabsContent>
@@ -68,6 +69,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           <TabsContent value="requests" className="w-full text-light-1">
             <ThreadsTab
               currentUserId={user.id}
+              searchId=""
               accountId={communityDetails._id}
               accountType="Community"
             />

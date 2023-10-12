@@ -181,3 +181,39 @@ export async function getActivity(userId: string) {
     throw error;
   }
 }
+
+export async function fetchUserComments(userId: string) {
+  try {
+    connectToDB();
+
+    // Find all threads authored by the user with the given userId
+    const threads = await Thread.find({
+      author: userId,
+      parentId: { $exists: true, $ne: null },
+    }).populate([
+      {
+        path: "author",
+        model: User,
+        select: "name image id", // Select the "name" and "_id" fields from the "User" model
+      },
+      {
+        path: "community",
+        model: Community,
+        select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
+      },
+      {
+        path: "children",
+        model: Thread,
+        populate: {
+          path: "author",
+          model: User,
+          select: "name image id", // Select the "name" and "_id" fields from the "User" model
+        },
+      },
+    ]);
+    return threads;
+  } catch (error) {
+    console.error("Error fetching user Comments:", error);
+    throw error;
+  }
+}

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import TailWindModal from "../modal/TailWindModal";
-import Image from "next/image";
 
 const ImageCarousel = (postImages: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);

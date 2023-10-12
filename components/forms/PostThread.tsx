@@ -24,6 +24,7 @@ const PostThread = ({ userId }: { userId: string }) => {
   const pathname = usePathname();
   const [files, setFiles] = useState<any[]>([]);
   const [message, setMessage] = useState("");
+  const [disable, setDisable] = useState(false);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage("");
@@ -69,6 +70,7 @@ const PostThread = ({ userId }: { userId: string }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    setDisable(true);
     await createThread({
       text: values.thread,
       author: userId,
@@ -105,8 +107,8 @@ const PostThread = ({ userId }: { userId: string }) => {
           files={files}
           message={message}
         />
-        <Button type="submit" className="bg-primary-500">
-          Send
+        <Button type="submit" className="bg-primary-500" disabled={disable}>
+          {disable ? "Posting..." : "Send"}
         </Button>
       </form>
     </Form>
