@@ -8,13 +8,20 @@ export default async function Home() {
   if (!user) redirect("/sign-in");
   const userId = await fetchUser(user.id);
   const result = await fetchUserFollowingPosts(user?.id);
-  //console.log(userId, "=============================");
+  console.log(result, "=============================");
   return (
     <div>
       <h1 className="head-text text-left">Threads-Clone</h1>
       <section className="mt-7 flex flex-col gap-10">
         {result.length === 0 ? (
-          <p>No Threads found</p>
+          <>
+            <div className="text-gray-300" style={{ fontSize: "25px" }}>
+              Hello there {user.username}!
+            </div>
+            <div className=" text-gray-500" style={{ fontSize: "20px" }}>
+              Follow users or post something new
+            </div>
+          </>
         ) : (
           <>
             {result.map((post: any) => (
