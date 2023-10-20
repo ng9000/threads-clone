@@ -19,40 +19,40 @@ const Page = async ({ params }: { params: { id: string } }) => {
     <section className="relative">
       <div>
         <ThreadCard
-          id={JSON.stringify(thread._id)}
-          _id={JSON.stringify(userInfo._id)}
+          id={JSON.stringify(thread?._id)}
+          _id={JSON.stringify(userInfo?._id)}
           currentUserId={user?.id || ""}
-          parentId={thread.parentId}
-          content={thread.text}
-          author={thread.author}
-          likes={thread.likes}
-          community={thread.community}
-          createdAt={thread.createdAt}
-          comments={thread.children}
+          parentId={thread?.parentId}
+          content={thread?.text}
+          author={thread?.author}
+          likes={thread?.likes}
+          community={thread?.community}
+          createdAt={thread?.createdAt}
+          comments={thread?.children}
           postImages={thread?.postImages}
         />
       </div>
       <div className="mt-7 ">
         <Comment
-          threadId={thread.id}
-          currentUserImg={userInfo.image}
-          currentUserId={JSON.stringify(userInfo._id)}
+          threadId={thread?.id}
+          currentUserImg={userInfo?.image}
+          currentUserId={JSON.stringify(userInfo?._id)}
         />
       </div>
       <div className=" mt-10">
         {thread.children.map((childItem: any) => (
           <ThreadCard
-            id={JSON.stringify(childItem._id)}
-            _id={JSON.stringify(userInfo._id)}
-            key={childItem._id}
+            id={JSON.stringify(childItem?._id)}
+            _id={JSON.stringify(userInfo?._id)}
+            key={childItem?._id}
             currentUserId={user?.id || ""}
-            parentId={childItem.parentId}
-            content={childItem.text}
-            likes={childItem.likes}
-            author={childItem.author}
-            community={childItem.community}
-            createdAt={childItem.createdAt}
-            comments={childItem.children}
+            parentId={childItem?.parentId}
+            content={childItem?.text}
+            likes={childItem?.likes}
+            author={childItem?.author}
+            community={childItem?.community}
+            createdAt={childItem?.createdAt}
+            comments={childItem?.children}
             // postImages={childItem?.postImages}
             isComment
           />

@@ -19,17 +19,17 @@ export default async function Home() {
           <>
             {result.map((post: any) => (
               <ThreadCard
-                key={post._id}
-                _id={JSON.stringify(userId._id)}
-                id={JSON.stringify(post._id)}
+                key={post?._id}
+                _id={JSON.stringify(userId?._id)}
+                id={JSON.stringify(post?._id)}
                 currentUserId={user?.id || ""}
-                parentId={post.parentId}
-                content={post.text}
-                author={post.author}
-                community={post.community}
-                createdAt={post.createdAt}
-                comments={post.children}
-                likes={post.likes}
+                parentId={post?.parentId}
+                content={post?.text}
+                author={post?.author}
+                community={post?.community}
+                createdAt={post?.createdAt}
+                comments={post?.children}
+                likes={post?.likes}
                 isComment={false}
                 postImages={post?.postImages}
               />

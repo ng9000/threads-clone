@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   if (!user) return null;
   const current_id = await fetchUser(user?.id);
-  const userInfo = await fetchUser(params.id);
+  const userInfo = await fetchUser(params?.id);
   const index = userInfo.followers.findIndex(
     (follwer: any) => follwer.followersId === user.id
   );
@@ -20,15 +20,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
   return (
     <section>
       <ProfileHeader
-        accountId={userInfo.id}
-        authUserID={user.id}
-        name={userInfo.name}
-        userObject={JSON.stringify(userInfo._id)}
-        username={userInfo.username}
-        imgUrl={userInfo.image}
-        bio={userInfo.bio}
-        followers={userInfo.followers.length}
-        following={userInfo.following.length - 1}
+        accountId={userInfo?.id}
+        authUserID={user?.id}
+        name={userInfo?.name}
+        userObject={JSON.stringify(userInfo?._id)}
+        username={userInfo?.username}
+        imgUrl={userInfo?.image}
+        bio={userInfo?.bio}
+        followers={userInfo?.followers.length}
+        following={userInfo?.following.length - 1}
         threads={userInfo?.threads.length}
         doesUserFollow={index >= 0}
         followingObject={JSON.stringify(userInfo?.followers[index]?._id)}
@@ -62,10 +62,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
             className="w-full text-light-1"
           >
             <ThreadsTab
-              _id={JSON.stringify(current_id._id)}
-              currentUserId={user.id}
-              accountId={userInfo.id}
-              searchId={JSON.stringify(userInfo._id)}
+              _id={JSON.stringify(current_id?._id)}
+              currentUserId={user?.id}
+              accountId={userInfo?.id}
+              searchId={JSON.stringify(userInfo?._id)}
               accountType="User"
               value="threads"
             />
@@ -77,11 +77,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
             className="w-full text-light-1"
           >
             <ThreadsTab
-              _id={JSON.stringify(current_id._id)}
-              currentUserId={user.id}
-              accountId={userInfo.id}
+              _id={JSON.stringify(current_id?._id)}
+              currentUserId={user?.id}
+              accountId={userInfo?.id}
               accountType="User"
-              searchId={JSON.stringify(userInfo._id)}
+              searchId={JSON.stringify(userInfo?._id)}
               value="replies"
             />
           </TabsContent>
