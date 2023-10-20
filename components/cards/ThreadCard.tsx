@@ -10,6 +10,7 @@ import Share from "../shared/Share";
 
 interface Props {
   id: string;
+  _id: string;
   currentUserId: string;
   parentId: string | null;
   content: string;
@@ -36,6 +37,7 @@ interface Props {
 
 function ThreadCard({
   id,
+  _id,
   currentUserId,
   parentId,
   content,
@@ -83,12 +85,14 @@ function ThreadCard({
             <div className={`${isComment && "mb-10"} mt-3 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
                 <LikeButton
-                  like={likes.includes(currentUserId)}
+                  like={
+                    likes.findIndex((like) => JSON.stringify(like) === _id) >= 0
+                  }
                   likesLength={likes.length}
-                  currentUserId={currentUserId}
                   id={id}
+                  currentUser_id={_id}
                 />
-                <Link href={`/thread/${id}`}>
+                <Link href={`/thread/${JSON.parse(id)}`}>
                   <Image
                     src="/assets/reply.svg"
                     alt="heart"
@@ -105,7 +109,7 @@ function ThreadCard({
                   height={24}
                   className="cursor-pointer object-contain"
                 />
-                <Share url={id} />
+                <Share url={JSON.stringify(id)} />
               </div>
 
               {isComment && comments.length > 0 && (

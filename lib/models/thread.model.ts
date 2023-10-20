@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const threadSchema = new mongoose.Schema({
   text: { type: String, require: true },
-  likes: [{ type: String }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

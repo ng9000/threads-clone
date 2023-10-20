@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -36,7 +36,7 @@ interface Props {
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
-  const [image, setImage] = useState("");
+  //const [image, setImage] = useState("");
   const { startUpload } = useUploadThing("media");
   const router = useRouter();
   const pathname = usePathname();
@@ -64,11 +64,12 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       filereader.onload = async (e) => {
         const imageDataUrl = e.target?.result?.toString() || "";
         fieldChange(imageDataUrl);
-        setImage(imageDataUrl);
+        // setImage(imageDataUrl);
       };
       filereader.readAsDataURL(file);
     }
   };
+
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     const blob = values.profile_photo;
     const hasImageChange = isBase64Image(blob);
@@ -86,6 +87,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       userId: user.id,
       path: pathname,
     });
+
     if (pathname === "/profile/edit") {
       router.back();
     } else {
@@ -184,7 +186,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
               </FormLabel>
               <FormControl>
                 <Textarea
-                  rows={10}
+                  rows={5}
                   className="account-form_input no-focus"
                   {...field}
                 />

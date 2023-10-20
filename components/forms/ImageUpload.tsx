@@ -12,7 +12,7 @@ const ImageUpload = ({ handleFile, files, removeImage, message }: Props) => {
   return (
     <>
       <div className="flex">
-        <div className="rounded-lg shadow-xl border-dark-4 bg-dark-3 text-light-1  md:w-1/2 w-[360px]">
+        <div className="rounded-lg shadow-xl border-dark-4 bg-dark-3 text-light-1  md:w-1/2 w-[310px]">
           <div className="m-4">
             <span className="flex justify-center items-center text-[12px] mb-1 text-red-500">
               {message}
@@ -47,9 +47,12 @@ const ImageUpload = ({ handleFile, files, removeImage, message }: Props) => {
               </label>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
-              {files.map((file: any, key: any) => {
+              {files.map((file: any) => {
                 return (
-                  <div key={key} className="overflow-hidden relative">
+                  <div
+                    key={file.file.name}
+                    className="overflow-hidden relative"
+                  >
                     <i
                       onClick={() => {
                         removeImage(file.file.name);

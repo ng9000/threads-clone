@@ -10,7 +10,9 @@ const Share = ({ url }: Params) => {
     <RWebShare
       data={{
         text: "Share thread",
-        url: `https://threads-clone-sand-zeta.vercel.app/thread/${url}`,
+        url: `https://threads-clone-sand-zeta.vercel.app/thread/${JSON.parse(
+          url
+        )}`,
         title: "Threads",
       }}
     >

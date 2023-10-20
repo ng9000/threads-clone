@@ -1,27 +1,27 @@
 import ThreadCard from "@/components/cards/ThreadCard";
-import { fetchPosts } from "@/lib/actions/thread.actions";
+import { fetchUser, fetchUserFollowingPosts } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const result = await fetchPosts(1, 30);
-  // console.log(result);
   const user = await currentUser();
-
   if (!user) redirect("/sign-in");
-
+  const userId = await fetchUser(user.id);
+  const result = await fetchUserFollowingPosts(user?.id);
+  //console.log(userId, "=============================");
   return (
     <div>
       <h1 className="head-text text-left">Threads-Clone</h1>
       <section className="mt-7 flex flex-col gap-10">
-        {result.posts.length === 0 ? (
+        {result.length === 0 ? (
           <p>No Threads found</p>
         ) : (
           <>
-            {result.posts.map((post) => (
+            {result.map((post: any) => (
               <ThreadCard
                 key={post._id}
-                id={post._id}
+                _id={JSON.stringify(userId._id)}
+                id={JSON.stringify(post._id)}
                 currentUserId={user?.id || ""}
                 parentId={post.parentId}
                 content={post.text}

@@ -21,6 +21,7 @@ const Page = async ({
     pageNumber: 1,
     pageSize: 25,
   });
+
   return (
     <section className="head-text mb-10">
       <h2>Search</h2>
@@ -30,14 +31,20 @@ const Page = async ({
           <p className="no-result">No users</p>
         ) : (
           <>
-            {result.users.map((person) => (
+            {result.users.map((person, index) => (
               <UserCard
                 key={person.id}
+                _id={person._id}
                 id={person.id}
+                currentUser={user.id}
                 name={person.name}
                 username={person.username}
                 imgUrl={person.image}
-                personType="User"
+                personType="user"
+                doesUserFollow={person.followers.some(
+                  (follower: any) => follower.followersId === user.id
+                )}
+                followingObject={JSON.stringify(person?.followers[index]?._id)}
               />
             ))}
           </>

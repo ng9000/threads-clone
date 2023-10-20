@@ -4,24 +4,24 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 interface Params {
-  id: any;
-  currentUserId: string;
+  id: string;
   like: boolean;
   likesLength: number;
+  currentUser_id: string;
 }
-const LikeButton = ({ id, currentUserId, like, likesLength }: Params) => {
+const LikeButton = ({ id, like, likesLength, currentUser_id }: Params) => {
   const [isLiked, setIsLiked] = useState(like);
   const [likeCount, setLikeCount] = useState(likesLength);
 
   const handleLikeOrDislike = () => {
     isLiked
       ? dislikePost({
-          threadId: id,
-          userId: currentUserId,
+          threadId: JSON.parse(id),
+          userId: JSON.parse(currentUser_id),
         })
       : likePost({
-          threadId: id,
-          userId: currentUserId,
+          threadId: JSON.parse(id),
+          userId: JSON.parse(currentUser_id),
         });
     setIsLiked(!isLiked);
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);

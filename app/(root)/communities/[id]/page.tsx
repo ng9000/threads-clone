@@ -22,6 +22,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
         imgUrl={communityDetails.image}
         bio={communityDetails.bio}
         type="Community"
+        userObject={""}
+        followers={0}
+        following={0}
+        threads={0}
+        doesUserFollow={false}
+        followingObject=""
       />
       <div className="mt-9">
         <Tabs defaultValue="threads" className="w-full">
@@ -59,9 +65,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   key={member.id}
                   id={member.id}
                   name={member.name}
+                  currentUser=""
+                  _id=""
                   username={member.username}
                   imgUrl={member.image}
                   personType="User"
+                  followingObject=""
+                  doesUserFollow={false}
                 />
               ))}
             </section>

@@ -6,15 +6,15 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  //FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  // FormMessage,
 } from "@/components/ui/form";
 import * as z from "zod";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
 import { Input } from "../ui/input";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
@@ -26,7 +26,6 @@ interface Props {
 }
 
 const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const form = useForm({

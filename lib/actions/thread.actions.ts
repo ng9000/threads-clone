@@ -23,7 +23,7 @@ export async function createThread({
   image,
 }: Params) {
   try {
-    connectToDB();
+    connectToDB("create thread");
 
     const communityIdObject = await Community.findOne(
       { id: communityId },
@@ -57,7 +57,7 @@ export async function createThread({
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
-  connectToDB();
+  connectToDB("fetch posts");
 
   // Calculate the number of posts to skip based on the page number and page size.
   const skipAmount = (pageNumber - 1) * pageSize;
@@ -110,7 +110,7 @@ async function fetchAllChildThreads(threadId: string): Promise<any[]> {
 
 export async function deleteThread(id: string, path: string): Promise<void> {
   try {
-    connectToDB();
+    connectToDB("delete thread");
 
     // Find the thread to be deleted (the main thread)
     const mainThread = await Thread.findById(id).populate("author community");
@@ -165,7 +165,7 @@ export async function deleteThread(id: string, path: string): Promise<void> {
 }
 
 export async function fetchThreadById(threadId: string) {
-  connectToDB();
+  connectToDB("fetch thread by id");
 
   try {
     const thread = await Thread.findById(threadId)
@@ -213,7 +213,7 @@ export async function addCommentToThread(
   userId: string,
   path: string
 ) {
-  connectToDB();
+  connectToDB("comment");
 
   try {
     // Find the original thread by its ID
@@ -250,7 +250,7 @@ interface PropsLikes {
   threadId: any;
 }
 export async function likePost({ userId, threadId }: PropsLikes) {
-  connectToDB();
+  connectToDB("like post");
   try {
     await Thread.findOneAndUpdate(
       { _id: threadId },
@@ -262,7 +262,7 @@ export async function likePost({ userId, threadId }: PropsLikes) {
 }
 
 export async function dislikePost({ userId, threadId }: PropsLikes) {
-  connectToDB();
+  connectToDB("dislike post");
   try {
     await Thread.findOneAndUpdate(
       { _id: threadId },

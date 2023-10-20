@@ -11,7 +11,7 @@ import { connectToDB } from "../mongoose";
 
 export async function fetchUser(userId: string) {
   try {
-    connectToDB();
+    connectToDB("fetch user");
 
     return await User.findOne({ id: userId }).populate({
       path: "communities",
@@ -40,9 +40,8 @@ export async function updateUser({
   image,
 }: Params): Promise<void> {
   try {
-    connectToDB();
-
-    await User.findOneAndUpdate(
+    connectToDB("update user (onboarding)");
+    const get_id = await User.findOneAndUpdate(
       { id: userId },
       {
         username: username.toLowerCase(),
@@ -50,9 +49,18 @@ export async function updateUser({
         bio,
         image,
         onboarded: true,
+        following: [],
+        followers: [],
       },
-      { upsert: true }
+      { upsert: true, new: true }
     );
+    if (get_id) {
+      await followUser({
+        currentUserId: userId,
+        objectOfUserFollowed: get_id._id,
+        idOfUserThatIFollowed: "",
+      });
+    }
 
     if (path === "/profile/edit") {
       revalidatePath(path);
@@ -64,7 +72,7 @@ export async function updateUser({
 
 export async function fetchUserPosts(userId: string) {
   try {
-    connectToDB();
+    connectToDB("fetch user posts");
 
     // Find all threads authored by the user with the given userId
     const threads = await User.findOne({ id: userId }).populate({
@@ -109,7 +117,7 @@ export async function fetchUsers({
   sortBy?: SortOrder;
 }) {
   try {
-    connectToDB();
+    connectToDB("fetch users (search)");
 
     // Calculate the number of users to skip based on the page number and page size.
     const skipAmount = (pageNumber - 1) * pageSize;
@@ -118,8 +126,12 @@ export async function fetchUsers({
     const regex = new RegExp(searchString, "i");
 
     // Create an initial query object to filter users.
+    const currentUser = await User.findOne({ id: userId });
+    // const followingIds = currentUser.following || [];
+
     const query: FilterQuery<typeof User> = {
       id: { $ne: userId }, // Exclude the current user from the results.
+      // _id: { $nin: followingIds }, // Excluding users who current user follows
     };
 
     // If the search string is not empty, add the $or operator to match either username or name fields.
@@ -145,7 +157,6 @@ export async function fetchUsers({
 
     // Check if there are more users beyond the current page.
     const isNext = totalUsersCount > skipAmount + users.length;
-
     return { users, isNext };
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -155,7 +166,7 @@ export async function fetchUsers({
 
 export async function getActivity(userId: string) {
   try {
-    connectToDB();
+    connectToDB("get activity");
 
     // Find all threads created by the user
     const userThreads = await Thread.find({ author: userId });
@@ -175,6 +186,17 @@ export async function getActivity(userId: string) {
       select: "name image _id",
     });
 
+    // let concatenatedLikes: any[] = [];
+    // for (const obj of userThreads) {
+    //   if (Array.isArray(obj.likes)) {
+    //     concatenatedLikes = concatenatedLikes.concat(obj.likes);
+    //   }
+    // }
+    // const likes = await User.find({
+    //   _id: { $in: concatenatedLikes },
+    // });
+    // console.log(likes, "=================================");
+
     return replies;
   } catch (error) {
     console.error("Error fetching replies: ", error);
@@ -184,7 +206,7 @@ export async function getActivity(userId: string) {
 
 export async function fetchUserComments(userId: string) {
   try {
-    connectToDB();
+    connectToDB("fetch user comments");
 
     // Find all threads authored by the user with the given userId
     const threads = await Thread.find({
@@ -215,5 +237,168 @@ export async function fetchUserComments(userId: string) {
   } catch (error) {
     console.error("Error fetching user Comments:", error);
     throw error;
+  }
+}
+
+export async function fetchUserFollowingPosts(
+  userId: string,
+  page: number = 1,
+  itemsPerPage: number = 5
+) {
+  try {
+    connectToDB("fetch posts from users following");
+    const skip = (page - 1) * itemsPerPage;
+    const threads = await User.findOne({ id: userId }).populate([
+      {
+        path: "following", // populating following accounts and then populating their posts
+        model: User,
+        populate: {
+          path: "threads",
+          model: Thread,
+          options: { sort: { createdAt: -1 }, limit: itemsPerPage, skip: skip },
+          populate: [
+            {
+              path: "author",
+              model: User,
+              select: "id name image",
+            },
+            {
+              path: "community",
+              model: Community,
+              // Select the "name" and "_id" fields from the "Community" model
+              select: "name id image _id",
+            },
+            {
+              path: "children",
+              model: Thread,
+              populate: {
+                path: "author",
+                model: User,
+                // Select the "name" and "_id" fields from the "User" model
+                select: "name image id",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+    const temp: any = [];
+    threads.following.map((user: any) => {
+      user.threads.map((thread: any) => {
+        temp.push(thread);
+      });
+    });
+    temp.sort((a: any, b: any) => (a.createdAt > b.createdAt ? -1 : 1));
+    return temp;
+  } catch (error) {
+    console.error("Error fetching user following:", error);
+    throw error;
+  }
+}
+
+export async function fetchUsersForSidebar({
+  userId,
+}: {
+  userId: string;
+  searchString?: string;
+  pageNumber?: number;
+  pageSize?: number;
+  sortBy?: SortOrder;
+}) {
+  try {
+    connectToDB("fetch users for sidebar");
+
+    // Create an initial query object to filter users.
+    const currentUser = await User.findOne({ id: userId });
+    const followingIds = currentUser.following || [];
+
+    const query: FilterQuery<typeof User> = {
+      id: { $ne: userId }, // Exclude the current user from the results.
+      _id: { $nin: followingIds }, // Excluding users who current user follows
+    };
+
+    const usersQuery = User.find(query).limit(5);
+    const users = await usersQuery.exec();
+
+    return { users };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+}
+
+interface PropsFollow {
+  currentUserId: any;
+  objectOfUserFollowed: any;
+  idOfUserThatIFollowed: any;
+}
+export async function followUser({
+  currentUserId,
+  objectOfUserFollowed,
+  idOfUserThatIFollowed,
+}: PropsFollow) {
+  try {
+    connectToDB("follow user");
+    const followUser = await User.findOneAndUpdate(
+      { id: currentUserId },
+      { $addToSet: { following: objectOfUserFollowed } },
+      { new: true }
+    );
+    if (idOfUserThatIFollowed) {
+      await User.findOneAndUpdate(
+        { id: idOfUserThatIFollowed },
+        {
+          $addToSet: {
+            followers: {
+              followersObject: followUser._id,
+              followersId: currentUserId,
+            },
+          },
+        }
+      );
+    }
+  } catch (error) {
+    console.error("Error while following user:", error);
+  }
+}
+
+interface unFollowProps {
+  userId: string;
+  unFollowObjectId: string;
+  userToUnFollow: string;
+  userObject: string;
+}
+export async function unFollowUser({
+  userId,
+  unFollowObjectId,
+  userToUnFollow,
+  userObject,
+}: unFollowProps) {
+  try {
+    connectToDB("unfollow user");
+
+    // remove objectId from current users account in following
+    await User.findOneAndUpdate(
+      { id: userId },
+      {
+        $pull: {
+          following: JSON.parse(userObject),
+        },
+      }
+    );
+
+    // remove object in followers from the user to unfollow
+    await User.findOneAndUpdate(
+      { id: userToUnFollow },
+      {
+        $pull: {
+          followers: {
+            _id: unFollowObjectId,
+          },
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error while unfollowing user:", error);
   }
 }

@@ -9,6 +9,7 @@ interface Props {
   accountType: string;
   value?: string;
   searchId: string;
+  _id: string;
 }
 const ThreadsTab = async ({
   currentUserId,
@@ -16,79 +17,95 @@ const ThreadsTab = async ({
   accountType,
   value,
   searchId,
+  _id,
 }: Props) => {
-  let response: any;
+  let threads: any;
+  let replies: any;
   if (accountType === "Community") {
-    response = await fetchCommunityPosts(accountId);
+    threads = await fetchCommunityPosts(accountId);
   } else {
-    response = await fetchUserPosts(accountId);
+    threads = await fetchUserPosts(accountId);
   }
   if (value === "replies") {
-    response = await fetchUserComments(searchId);
+    replies = await fetchUserComments(JSON.parse(searchId));
   }
 
-  if (!response) redirect("/");
+  if (!threads) redirect("/");
   return (
     <section className="mt-9 flex flex-col gap-10">
       {value === "replies" ? (
         <>
-          {response.map((reply: any) => (
-            <ThreadCard
-              key={reply._id}
-              id={reply._id}
-              currentUserId={currentUserId}
-              parentId={reply.parentId}
-              content={reply.text}
-              likes={reply.likes}
-              author={
-                accountType === "User"
-                  ? {
-                      name: reply.author.name,
-                      image: reply.author.image,
-                      id: reply.author.id,
-                    }
-                  : {
-                      name: reply.author.name,
-                      image: reply.author.image,
-                      id: reply.author.id,
-                    }
-              }
-              community={reply.community}
-              createdAt={reply.createdAt}
-              comments={reply.children}
-              postImages={reply?.postImages}
-            />
-          ))}
+          {replies?.length !== 0 ? (
+            <>
+              {replies.map((reply: any) => (
+                <ThreadCard
+                  key={reply._id}
+                  id={JSON.stringify(reply._id)}
+                  _id={_id}
+                  currentUserId={currentUserId}
+                  parentId={reply.parentId}
+                  content={reply.text}
+                  likes={reply.likes}
+                  author={
+                    accountType === "User"
+                      ? {
+                          name: reply.author.name,
+                          image: reply.author.image,
+                          id: reply.author.id,
+                        }
+                      : {
+                          name: reply.author.name,
+                          image: reply.author.image,
+                          id: reply.author.id,
+                        }
+                  }
+                  community={reply.community}
+                  createdAt={reply.createdAt}
+                  comments={reply.children}
+                  postImages={reply?.postImages}
+                />
+              ))}
+            </>
+          ) : (
+            <div className="text-light-1 text-center ">No replies</div>
+          )}
         </>
       ) : (
         <>
-          {response.threads.map((thread: any) => (
-            <ThreadCard
-              key={thread._id}
-              id={thread._id}
-              currentUserId={currentUserId}
-              parentId={thread.parentId}
-              content={thread.text}
-              likes={thread.likes}
-              author={
-                accountType === "User"
-                  ? {
-                      name: response.name,
-                      image: response.image,
-                      id: response.id,
-                    }
-                  : {
-                      name: thread.author.name,
-                      image: thread.author.image,
-                      id: thread.author.id,
-                    }
-              }
-              community={thread.community}
-              createdAt={thread.createdAt}
-              comments={thread.children}
-              postImages={thread?.postImages}
-            />
-          ))}
+          {threads?.threads?.length !== 0 ? (
+            <>
+              {threads.threads.map((thread: any) => (
+                <ThreadCard
+                  key={thread._id}
+                  _id={_id}
+                  id={JSON.stringify(thread._id)}
+                  currentUserId={currentUserId}
+                  parentId={thread.parentId}
+                  content={thread.text}
+                  likes={thread.likes}
+                  author={
+                    accountType === "User"
+                      ? {
+                          name: threads.name,
+                          image: threads.image,
+                          id: threads.id,
+                        }
+                      : {
+                          name: thread.author.name,
+                          image: thread.author.image,
+                          id: thread.author.id,
+                        }
+                  }
+                  community={thread.community}
+                  createdAt={thread.createdAt}
+                  comments={thread.children}
+                  postImages={thread?.postImages}
+                />
+              ))}
+            </>
+          ) : (
+            <div className="text-light-1 text-center">No threads posted</div>
+          )}
         </>
       )}
     </section>

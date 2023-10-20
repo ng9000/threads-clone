@@ -10,6 +10,7 @@ const LeftSideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { userId } = useAuth();
+  // console.log(userId);
 
   return (
     <section className="custom-scrollbar leftsidebar">
@@ -24,6 +25,7 @@ const LeftSideBar = () => {
               href={link.route}
               key={link.label}
               className={`leftsidebar_link ${isActive && "bg-primary-500"}`}
+              suppressHydrationWarning
             >
               <Image
                 src={link.imgURL}
