@@ -15,7 +15,7 @@ const Page = async () => {
   return (
     <>
       <h1 className="head-text">Create thread</h1>
-      <PostThread userId={userStringId} />
+      <PostThread isRepost={false} userId={userStringId} originalPost={null} />
     </>
   );
 };

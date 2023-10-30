@@ -2,13 +2,14 @@ import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchUser, fetchUserFollowingPosts } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import RepostCard from "@/components/cards/RepostCard";
 
 export default async function Home() {
   const user = await currentUser();
   if (!user) redirect("/sign-in");
   const userId = await fetchUser(user.id);
   const result = await fetchUserFollowingPosts(user?.id);
-  console.log(result, "=============================");
+  // console.log(result, "=============================");
   return (
     <div>
       <h1 className="head-text text-left">Threads-Clone</h1>
@@ -25,21 +26,40 @@ export default async function Home() {
         ) : (
           <>
             {result.map((post: any) => (
-              <ThreadCard
-                key={post?._id}
-                _id={JSON.stringify(userId?._id)}
-                id={JSON.stringify(post?._id)}
-                currentUserId={user?.id || ""}
-                parentId={post?.parentId}
-                content={post?.text}
-                author={post?.author}
-                community={post?.community}
-                createdAt={post?.createdAt}
-                comments={post?.children}
-                likes={post?.likes}
-                isComment={false}
-                postImages={post?.postImages}
-              />
+              <div key={post?._id}>
+                {post.isRepost ? (
+                  <RepostCard
+                    _id={JSON.stringify(userId?._id)}
+                    id={JSON.stringify(post?._id)}
+                    currentUserId={user?.id || ""}
+                    parentId={post?.parentId}
+                    content={post?.text}
+                    author={post?.author}
+                    community={post?.community}
+                    createdAt={post?.createdAt}
+                    comments={post?.children}
+                    likes={post?.likes}
+                    isComment={false}
+                    postImages={post?.postImages}
+                    originalPost={post?.originalPost}
+                  />
+                ) : (
+                  <ThreadCard
+                    _id={JSON.stringify(userId?._id)}
+                    id={JSON.stringify(post?._id)}
+                    currentUserId={user?.id || ""}
+                    parentId={post?.parentId}
+                    content={post?.text}
+                    author={post?.author}
+                    community={post?.community}
+                    createdAt={post?.createdAt}
+                    comments={post?.children}
+                    likes={post?.likes}
+                    isComment={false}
+                    postImages={post?.postImages}
+                  />
+                )}
+              </div>
             ))}
           </>
         )}

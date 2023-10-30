@@ -3,7 +3,7 @@ import { fetchUser } from "@/lib/actions/user.action";
 import { redirect } from "next/navigation";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { profileTabs } from "@/constants";
+import { profileTabs } from "@/lib/constants";
 import Image from "next/image";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 

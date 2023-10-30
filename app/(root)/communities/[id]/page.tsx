@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { communityTabs } from "@/constants";
+import { communityTabs } from "@/lib/constants";
 import Image from "next/image";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 import { fetchCommunityDetails } from "@/lib/actions/community.actions";

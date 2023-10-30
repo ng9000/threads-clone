@@ -7,7 +7,8 @@ import LeftSideBar from "@/components/shared/LeftSideBar";
 import RightSideBar from "@/components/shared/RightSideBar";
 import BottomBar from "@/components/shared/BottomBar";
 import { redirect } from "next/navigation";
-import Loading from "./loading";
+import Image from "next/image";
+import svgImage from "@/components/loader/loader.svg";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,7 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} bg-dark-1`}>
           {user ? (
             <>
               <TopBar />
@@ -39,9 +40,15 @@ export default async function RootLayout({
               <BottomBar />
             </>
           ) : (
-            <>
-              <Loading />
-            </>
+            <div className="w-full h-full flex items-center justify-center bg-dark-1">
+              <Image
+                src={svgImage}
+                width={50}
+                height={50}
+                alt="loader"
+                className="object-contain text-light-1"
+              />
+            </div>
           )}
         </body>
       </html>

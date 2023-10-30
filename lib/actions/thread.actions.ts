@@ -13,11 +13,15 @@ interface Params {
   communityId: string | null;
   path: string;
   image?: File[];
+  isRepost: boolean;
+  originalPost: string | null;
 }
 
 export async function createThread({
   text,
   author,
+  isRepost,
+  originalPost,
   communityId,
   path,
   image,
@@ -34,6 +38,8 @@ export async function createThread({
       text,
       author,
       likes: [],
+      isRepost: isRepost,
+      originalPost: originalPost,
       postImages: image || null,
       community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
     });

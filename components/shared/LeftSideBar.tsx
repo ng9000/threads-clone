@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { sidebarLinks } from "@/constants";
+import { sidebarLinks } from "@/lib/constants";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, SignedIn, useAuth } from "@clerk/clerk-react";
@@ -27,12 +27,7 @@ const LeftSideBar = () => {
               className={`leftsidebar_link ${isActive && "bg-primary-500"}`}
               suppressHydrationWarning
             >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                height={24}
-                width={24}
-              />
+              <Image src={link.imgURL} alt={link.alt} height={24} width={24} />
               <p className="text-light-1 max-lg:hidden">{link.label}</p>
             </Link>
           );

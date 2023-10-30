@@ -72,11 +72,10 @@ function ThreadCard({
 
           <div className="flex w-full flex-col">
             <Link href={`/profile/${author.id}`} className="w-fit">
-              <h4 className="cursor-pointer text-base-semibold text-light-1">
+              <h1 className="cursor-pointer text-base-semibold text-light-1">
                 {author.name}
-              </h4>
+              </h1>
             </Link>
-
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
             {postImages?.length > 0 && postImages ? (
@@ -95,20 +94,22 @@ function ThreadCard({
                 <Link href={`/thread/${JSON.parse(id)}`}>
                   <Image
                     src="/assets/reply.svg"
-                    alt="heart"
+                    alt="comment"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
                   />
                 </Link>
                 {/* //TODO add quoted retweet */}
-                <Image
-                  src="/assets/repost.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                />
+                <Link href={`/repost/${JSON.parse(id)}`}>
+                  <Image
+                    src="/assets/repost.svg"
+                    alt="repost"
+                    width={24}
+                    height={24}
+                    className="cursor-pointer object-contain"
+                  />
+                </Link>
                 <Share url={JSON.stringify(id)} />
               </div>
 
@@ -124,7 +125,7 @@ function ThreadCard({
         </div>
 
         <DeleteThread
-          threadId={JSON.stringify(id)}
+          threadId={id}
           currentUserId={currentUserId}
           authorId={author.id}
           parentId={parentId}

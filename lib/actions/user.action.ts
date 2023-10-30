@@ -278,6 +278,16 @@ export async function fetchUserFollowingPosts(
                 select: "name image id",
               },
             },
+            {
+              path: "originalPost",
+              model: Thread,
+              populate: {
+                path: "author",
+                model: User,
+                // Select the "name" and "_id" fields from the "User" model
+                select: "name image id",
+              },
+            },
           ],
         },
       },
@@ -400,5 +410,19 @@ export async function unFollowUser({
     );
   } catch (error) {
     console.error("Error while unfollowing user:", error);
+  }
+}
+
+export async function fetchPost(postId: string) {
+  try {
+    connectToDB("fetch thread for reposting");
+
+    return await Thread.findOne({ _id: postId }).populate({
+      path: "author",
+      model: User,
+      select: "id name image",
+    });
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error}`);
   }
 }

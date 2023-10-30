@@ -96,7 +96,7 @@ export const POST = async (request: Request) => {
   if (eventType === "organizationInvitation.created") {
     try {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Invitations#operation/CreateOrganizationInvitation
-      console.log("Invitation created", evnt?.data);
+      //  console.log("Invitation created", evnt?.data);
 
       return NextResponse.json(
         { message: "Invitation created" },
@@ -118,7 +118,7 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/CreateOrganizationMembership
       // Show what evnt?.data sends from above resource
       const { organization, public_user_data } = evnt?.data;
-      console.log("created", evnt?.data);
+      // console.log("created", evnt?.data);
 
       // @ts-ignore
       await addMemberToCommunity(organization.id, public_user_data.user_id);
@@ -143,7 +143,7 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/DeleteOrganizationMembership
       // Show what evnt?.data sends from above resource
       const { organization, public_user_data } = evnt?.data;
-      console.log("removed", evnt?.data);
+      // console.log("removed", evnt?.data);
 
       // @ts-ignore
       await removeUserFromCommunity(public_user_data.user_id, organization.id);
@@ -165,7 +165,7 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/UpdateOrganization
       // Show what evnt?.data sends from above resource
       const { id, logo_url, name, slug } = evnt?.data;
-      console.log("updated", evnt?.data);
+      // console.log("updated", evnt?.data);
 
       // @ts-ignore
       await updateCommunityInfo(id, name, slug, logo_url);
@@ -187,7 +187,7 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/DeleteOrganization
       // Show what evnt?.data sends from above resource
       const { id } = evnt?.data;
-      console.log("deleted", evnt?.data);
+      // console.log("deleted", evnt?.data);
 
       // @ts-ignore
       await deleteCommunity(id);

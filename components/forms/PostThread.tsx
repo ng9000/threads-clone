@@ -19,7 +19,12 @@ import { createThread } from "@/lib/actions/thread.actions";
 import { useOrganization } from "@clerk/nextjs";
 import ImageUpload from "./ImageUpload";
 
-const PostThread = ({ userId }: { userId: string }) => {
+interface Props {
+  userId: string;
+  isRepost: boolean;
+  originalPost: string | null;
+}
+const PostThread = ({ userId, isRepost, originalPost }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const [files, setFiles] = useState<any[]>([]);
@@ -77,6 +82,8 @@ const PostThread = ({ userId }: { userId: string }) => {
       communityId: organization ? organization?.id : null,
       path: pathname,
       image: files,
+      isRepost: isRepost,
+      originalPost: originalPost,
     });
     router.push("/");
   };
@@ -92,7 +99,7 @@ const PostThread = ({ userId }: { userId: string }) => {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-3 w-full">
               <FormLabel className="text-base-semibold text-light-2">
-                Content
+                {isRepost && "Repost"} Content
               </FormLabel>
               <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1">
                 <Textarea rows={7} {...field} />
