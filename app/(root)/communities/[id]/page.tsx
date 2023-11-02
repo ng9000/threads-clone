@@ -6,10 +6,13 @@ import Image from "next/image";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 import { fetchCommunityDetails } from "@/lib/actions/community.actions";
 import UserCard from "@/components/cards/UserCard";
+import { fetchUser } from "@/lib/actions/user.action";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
   if (!user) return null;
+  const userInfo = await fetchUser(params?.id);
+  const current_id = await fetchUser(user?.id);
 
   const communityDetails = await fetchCommunityDetails(params.id);
   return (
@@ -52,6 +55,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </TabsList>
           <TabsContent value="threads" className="w-full text-light-1">
             <ThreadsTab
+              user_Id={JSON.stringify(userInfo?._id)}
+              userId={JSON.stringify(user?.id)}
+              _id={JSON.stringify(current_id?._id)}
               currentUserId={user.id}
               accountId={communityDetails._id}
               searchId=""
@@ -78,6 +84,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </TabsContent>
           <TabsContent value="requests" className="w-full text-light-1">
             <ThreadsTab
+              user_Id={JSON.stringify(userInfo?._id)}
+              userId={JSON.stringify(user?.id)}
+              _id={JSON.stringify(current_id?._id)}
               currentUserId={user.id}
               searchId=""
               accountId={communityDetails._id}

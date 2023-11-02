@@ -12,6 +12,7 @@ export default async function Home() {
   // console.log(result, "=============================");
   return (
     <div>
+      {/* // TODO:- add infinite scroll to app */}
       <h1 className="head-text text-left">Threads-Clone</h1>
       <section className="mt-7 flex flex-col gap-10">
         {result.length === 0 ? (
@@ -31,7 +32,7 @@ export default async function Home() {
                   <RepostCard
                     _id={JSON.stringify(userId?._id)}
                     id={JSON.stringify(post?._id)}
-                    currentUserId={user?.id || ""}
+                    currentUserId={JSON.stringify(user?.id) || ""}
                     parentId={post?.parentId}
                     content={post?.text}
                     author={post?.author}
@@ -42,6 +43,7 @@ export default async function Home() {
                     isComment={false}
                     postImages={post?.postImages}
                     originalPost={post?.originalPost}
+                    reposts={post?.reposts}
                   />
                 ) : (
                   <ThreadCard
@@ -57,6 +59,7 @@ export default async function Home() {
                     likes={post?.likes}
                     isComment={false}
                     postImages={post?.postImages}
+                    reposts={post?.reposts}
                   />
                 )}
               </div>
