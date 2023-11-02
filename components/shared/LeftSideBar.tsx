@@ -10,6 +10,7 @@ const LeftSideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { userId } = useAuth();
+  // console.log(userId);
 
   return (
     <section className="custom-scrollbar leftsidebar">

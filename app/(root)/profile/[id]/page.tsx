@@ -66,8 +66,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
               currentUserId={user?.id}
               accountId={userInfo?.id}
               searchId={JSON.stringify(userInfo?._id)}
-              user_Id={JSON.stringify(userInfo?._id)}
-              userId={JSON.stringify(user?.id)}
               accountType="User"
               value="threads"
             />
@@ -83,8 +81,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
               currentUserId={user?.id}
               accountId={userInfo?.id}
               accountType="User"
-              user_Id={JSON.stringify(userInfo?._id)}
-              userId={JSON.stringify(user?.id)}
               searchId={JSON.stringify(userInfo?._id)}
               value="replies"
             />

@@ -33,7 +33,6 @@ interface Props {
   isComment?: boolean;
   postImages?: any;
   originalPost?: any;
-  reposts: any[];
 }
 
 const RepostCard = async ({
@@ -50,9 +49,8 @@ const RepostCard = async ({
   likes,
   postImages,
   originalPost,
-  reposts,
 }: Props) => {
-  //console.log(originalPost, "+==========++++++++++++++++++");
+  // console.log(originalPost, "+==========++++++++++++++++++");
 
   return (
     <div>
@@ -92,61 +90,48 @@ const RepostCard = async ({
               ) : null}
 
               {/* Original thread */}
-
               <article
-                className={`flex flex-col rounded-xl mt-2 md:mx-3 bg-dark-1 p-3`}
+                className={`flex flex-col rounded-xl mt-2 mx-3 bg-dark-1 p-3`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex w-full flex-1 flex-row gap-4">
-                    {originalPost !== null ? (
-                      <>
-                        <div className="flex flex-col items-center">
-                          <Link
-                            href={`/thread/${originalPost?._id}`}
-                            className="relative h-11 w-11"
-                          >
-                            <Image
-                              src={originalPost?.author?.image}
-                              alt="user_community_image"
-                              fill
-                              className="cursor-pointer rounded-full"
-                            />
-                          </Link>
+                    <div className="flex flex-col items-center">
+                      <Link
+                        href={`/thread/${originalPost?._id}`}
+                        className="relative h-11 w-11"
+                      >
+                        <Image
+                          src={originalPost?.author.image}
+                          alt="user_community_image"
+                          fill
+                          className="cursor-pointer rounded-full"
+                        />
+                      </Link>
 
-                          <div className="thread-card_bar" />
-                        </div>
+                      <div className="thread-card_bar" />
+                    </div>
 
-                        <div className="flex w-full flex-col">
-                          <Link
-                            href={`/thread/${originalPost?._id}`}
-                            className="w-fit"
-                          >
-                            <h1 className="cursor-pointer text-base-semibold text-light-1">
-                              {originalPost?.author.name}
-                            </h1>
-                          </Link>
-                          <p className="mt-2 text-small-regular text-light-2">
-                            {originalPost?.text}
-                          </p>
+                    <div className="flex w-full flex-col">
+                      <Link
+                        href={`/thread/${originalPost?._id}`}
+                        className="w-fit"
+                      >
+                        <h1 className="cursor-pointer text-base-semibold text-light-1">
+                          {originalPost?.author.name}
+                        </h1>
+                      </Link>
+                      <p className="mt-2 text-small-regular text-light-2">
+                        {originalPost?.text}
+                      </p>
 
-                          {originalPost?.postImages?.length > 0 &&
-                          originalPost?.postImages ? (
-                            <ImageCarousel
-                              postImages={originalPost?.postImages}
-                            />
-                          ) : null}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-gray-400">
-                        This thread is no longer available, as the original post
-                        has been deleted.
-                      </div>
-                    )}
+                      {originalPost?.postImages?.length > 0 &&
+                      originalPost?.postImages ? (
+                        <ImageCarousel postImages={originalPost?.postImages} />
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </article>
-              {/* Original thread */}
               <div
                 className={`${isComment && "mb-10"} mt-3 flex flex-col gap-3`}
               >
@@ -169,10 +154,8 @@ const RepostCard = async ({
                       className="cursor-pointer object-contain"
                     />
                   </Link>
-                  <Link
-                    href={`/repost/${JSON.parse(id)}`}
-                    className="flex items-center"
-                  >
+                  {/* //TODO add quoted retweet */}
+                  <Link href={`/repost/${JSON.parse(id)}`}>
                     <Image
                       src="/assets/repost.svg"
                       alt="repost"
@@ -180,11 +163,6 @@ const RepostCard = async ({
                       height={24}
                       className="cursor-pointer object-contain"
                     />
-                    {reposts?.length > 0 && (
-                      <span className="mt-1 text-subtle-medium text-gray-1">
-                        {reposts?.length} Repost{reposts?.length > 1 ? "s" : ""}
-                      </span>
-                    )}
                   </Link>
                   <Share url={JSON.stringify(id)} />
                 </div>
@@ -202,7 +180,7 @@ const RepostCard = async ({
 
           <DeleteThread
             threadId={id}
-            currentUserId={JSON.parse(currentUserId)}
+            currentUserId={currentUserId}
             authorId={author.id}
             parentId={parentId}
             isComment={isComment}

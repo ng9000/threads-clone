@@ -85,28 +85,12 @@ export async function fetchUserPosts(userId: string) {
           select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
         },
         {
-          path: "author",
-          model: User,
-          // Select the "name" and "_id" fields from the "User" model
-          select: "name image id",
-        },
-        {
           path: "children",
           model: Thread,
           populate: {
             path: "author",
             model: User,
             select: "name image id", // Select the "name" and "_id" fields from the "User" model
-          },
-        },
-        {
-          path: "originalPost",
-          model: Thread,
-          populate: {
-            path: "author",
-            model: User,
-            // Select the "name" and "_id" fields from the "User" model
-            select: "name image id",
           },
         },
       ],
@@ -191,9 +175,6 @@ export async function getActivity(userId: string) {
     const childThreadIds = userThreads.reduce((acc, userThread) => {
       return acc.concat(userThread.children);
     }, []);
-    const childRepostsIds = userThreads.reduce((acc, userThread) => {
-      return acc.concat(userThread.reposts);
-    }, []);
 
     // Find and return the child threads (replies) excluding the ones created by the same user
     const replies = await Thread.find({
@@ -204,15 +185,6 @@ export async function getActivity(userId: string) {
       model: User,
       select: "name image _id",
     });
-    const reposts = await Thread.find({
-      childRepostsIds,
-      author: { $ne: userId }, // Exclude threads authored by the same user
-    }).populate({
-      path: "author",
-      model: User,
-      select: "name image _id",
-    });
-    console.log(reposts, "=-=-=-=-=-=-=--=-=-=-=--=-=-=-=-=-=");
 
     // let concatenatedLikes: any[] = [];
     // for (const obj of userThreads) {

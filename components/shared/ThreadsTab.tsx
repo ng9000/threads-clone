@@ -2,7 +2,6 @@ import { fetchUserComments, fetchUserPosts } from "@/lib/actions/user.action";
 import { redirect } from "next/navigation";
 import ThreadCard from "../cards/ThreadCard";
 import { fetchCommunityPosts } from "@/lib/actions/community.actions";
-import RepostCard from "../cards/RepostCard";
 
 interface Props {
   currentUserId: string;
@@ -11,8 +10,6 @@ interface Props {
   value?: string;
   searchId: string;
   _id: string;
-  userId: string;
-  user_Id: string;
 }
 const ThreadsTab = async ({
   currentUserId,
@@ -21,8 +18,6 @@ const ThreadsTab = async ({
   value,
   searchId,
   _id,
-  userId,
-  user_Id,
 }: Props) => {
   let threads: any;
   let replies: any;
@@ -80,52 +75,32 @@ const ThreadsTab = async ({
           {threads?.threads?.length !== 0 ? (
             <>
               {threads.threads.map((thread: any) => (
-                <>
-                  {thread.isRepost ? (
-                    <RepostCard
-                      _id={user_Id}
-                      id={JSON.stringify(thread?._id)}
-                      currentUserId={userId || ""}
-                      parentId={thread?.parentId}
-                      content={thread?.text}
-                      author={thread?.author}
-                      community={thread?.community}
-                      createdAt={thread?.createdAt}
-                      comments={thread?.children}
-                      likes={thread?.likes}
-                      isComment={false}
-                      postImages={thread?.postImages}
-                      originalPost={thread?.originalPost}
-                    />
-                  ) : (
-                    <ThreadCard
-                      key={thread?._id}
-                      _id={_id}
-                      id={JSON.stringify(thread?._id)}
-                      currentUserId={currentUserId}
-                      parentId={thread?.parentId}
-                      content={thread?.text}
-                      likes={thread?.likes}
-                      author={
-                        accountType === "User"
-                          ? {
-                              name: threads?.name,
-                              image: threads?.image,
-                              id: threads?.id,
-                            }
-                          : {
-                              name: thread?.author.name,
-                              image: thread?.author.image,
-                              id: thread?.author.id,
-                            }
-                      }
-                      community={thread?.community}
-                      createdAt={thread?.createdAt}
-                      comments={thread?.children}
-                      postImages={thread?.postImages}
-                    />
-                  )}
-                </>
+                <ThreadCard
+                  key={thread?._id}
+                  _id={_id}
+                  id={JSON.stringify(thread?._id)}
+                  currentUserId={currentUserId}
+                  parentId={thread?.parentId}
+                  content={thread?.text}
+                  likes={thread?.likes}
+                  author={
+                    accountType === "User"
+                      ? {
+                          name: threads?.name,
+                          image: threads?.image,
+                          id: threads?.id,
+                        }
+                      : {
+                          name: thread?.author.name,
+                          image: thread?.author.image,
+                          id: thread?.author.id,
+                        }
+                  }
+                  community={thread?.community}
+                  createdAt={thread?.createdAt}
+                  comments={thread?.children}
+                  postImages={thread?.postImages}
+                />
               ))}
             </>
           ) : (

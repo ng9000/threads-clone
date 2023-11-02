@@ -108,17 +108,12 @@ const PostThread = ({ userId, isRepost, originalPost }: Props) => {
             </FormItem>
           )}
         />
-
         <ImageUpload
           handleFile={handleFile}
           removeImage={removeImage}
           files={files}
           message={message}
         />
-        <p className=" text-small-regular text-red-600">
-          Images greater than 1 MB cannot be uploaded due to free DB
-          restrictions
-        </p>
         <Button type="submit" className="bg-primary-500" disabled={disable}>
           {disable ? "Posting..." : "Send"}
         </Button>

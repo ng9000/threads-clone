@@ -25,12 +25,6 @@ const threadSchema = new mongoose.Schema({
     },
   ],
   postImages: [],
-  reposts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Thread",
-    },
-  ],
 });
 
 const Thread = mongoose.models.Thread || mongoose.model("Thread", threadSchema);

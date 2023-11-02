@@ -33,7 +33,6 @@ interface Props {
   }[];
   isComment?: boolean;
   postImages?: any;
-  reposts: any[];
 }
 
 function ThreadCard({
@@ -49,7 +48,6 @@ function ThreadCard({
   isComment,
   likes,
   postImages,
-  reposts,
 }: Props) {
   return (
     <article
@@ -102,10 +100,8 @@ function ThreadCard({
                     className="cursor-pointer object-contain"
                   />
                 </Link>
-                <Link
-                  href={`/repost/${JSON.parse(id)}`}
-                  className="flex items-center"
-                >
+                {/* //TODO add quoted retweet */}
+                <Link href={`/repost/${JSON.parse(id)}`}>
                   <Image
                     src="/assets/repost.svg"
                     alt="repost"
@@ -113,11 +109,6 @@ function ThreadCard({
                     height={24}
                     className="cursor-pointer object-contain"
                   />
-                  {reposts?.length > 0 && (
-                    <span className="mt-1 text-subtle-medium text-gray-1">
-                      {reposts?.length} Repost{reposts?.length > 1 ? "s" : ""}
-                    </span>
-                  )}
                 </Link>
                 <Share url={JSON.stringify(id)} />
               </div>

@@ -38,7 +38,6 @@ export async function createThread({
       text,
       author,
       likes: [],
-      reposts: [],
       isRepost: isRepost,
       originalPost: originalPost,
       postImages: image || null,
@@ -54,13 +53,6 @@ export async function createThread({
       // Update Community model
       await Community.findByIdAndUpdate(communityIdObject, {
         $push: { threads: createdThread._id },
-      });
-    }
-
-    // Update reposts array of original post
-    if (isRepost) {
-      await Thread.findByIdAndUpdate(originalPost, {
-        $push: { reposts: createdThread._id },
       });
     }
 
