@@ -212,7 +212,6 @@ export async function getActivity(userId: string) {
       model: User,
       select: "name image _id",
     });
-    console.log(reposts, "=-=-=-=-=-=-=--=-=-=-=--=-=-=-=-=-=");
 
     // let concatenatedLikes: any[] = [];
     // for (const obj of userThreads) {

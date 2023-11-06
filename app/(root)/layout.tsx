@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import svgImage from "@/components/loader/loader.svg";
 import { Suspense } from "react";
-import Loading from "./loading";
+//import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,17 +36,12 @@ export default async function RootLayout({
                 <LeftSideBar />
                 <section className="main-container">
                   <div className="w-full max-w-4xl">
-                    <Suspense
-                      fallback={
-                        <div className="text-9xl text-light-1">Loading...</div>
-                      }
-                    >
-                      {children}
-                    </Suspense>
+                    <Suspense>{children}</Suspense>
                   </div>
                 </section>
                 <RightSideBar />
               </main>
+
               <BottomBar />
             </>
           ) : (
